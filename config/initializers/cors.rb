@@ -14,6 +14,3 @@ Rails.application.config.middleware.insert_before 0, Rack::Cors do
       methods: [:get, :post, :put, :patch, :delete, :options, :head]
   end
 end
-
-
-  course title:string description:text start_date :end_date, :total_video_size
