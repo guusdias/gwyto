@@ -7,6 +7,8 @@ import {
   StackDivider,
   Box,
   Text,
+  Image,
+  Flex,
 } from "@chakra-ui/react";
 import ICourse from "../../../types/ICourse";
 
@@ -17,46 +19,41 @@ interface CourseCardProps {
 export default function CourseCard({ course }: CourseCardProps) {
   return (
     <Card>
-      <CardHeader>
-        <Heading size="md">{course.title}</Heading> {/* Exibe o título */}
-      </CardHeader>
+      <Flex
+        direction={{ base: "column", md: "row" }}
+        align={{ base: "center", md: "flex-start" }}
+        gap={4}
+        p={4}
+      >
+        <Box boxSize={{ base: "xs", md: "sm" }} flexShrink={0}>
+          <Image
+            src={course.imageUrl}
+            alt={`Image for course: ${course.title}`}
+            objectFit="fill"
+            borderRadius="md"
+          />
+        </Box>
 
-      <CardBody>
-        <Stack divider={<StackDivider />} spacing="4">
-          <Box>
-            <Heading size="xs" textTransform="uppercase">
-              Description
-            </Heading>
-            <Text pt="2" fontSize="sm">
-              {course.description}
-            </Text>
-          </Box>
-          <Box>
-            <Heading size="xs" textTransform="uppercase">
-              Start Date
-            </Heading>
-            <Text pt="2" fontSize="sm">
-              {new Date(course.startDate).toLocaleDateString()}{" "}
-            </Text>
-          </Box>
-          <Box>
-            <Heading size="xs" textTransform="uppercase">
-              End Date
-            </Heading>
-            <Text pt="2" fontSize="sm">
-              {new Date(course.endDate).toLocaleDateString()}{" "}
-            </Text>
-          </Box>
-          <Box>
-            <Heading size="xs" textTransform="uppercase">
-              Total Video Size
-            </Heading>
-            <Text pt="2" fontSize="sm">
-              {course.totalVideoSize} MB{" "}
-            </Text>
-          </Box>
-        </Stack>
-      </CardBody>
+        <Box flex="1">
+          <CardHeader>
+            <Heading size="lg">{course.title}</Heading>
+          </CardHeader>
+
+          <CardBody>
+            <Stack divider={<StackDivider />} spacing={4}>
+              <Box>
+                <Heading size="sm" textTransform="uppercase">
+                  Description
+                </Heading>
+                <Text mt={2} fontSize="md">
+                  {course.description}
+                </Text>
+              </Box>
+              {/* Add more details (like instructor, duration, etc.) if needed */}
+            </Stack>
+          </CardBody>
+        </Box>
+      </Flex>
     </Card>
   );
 }
