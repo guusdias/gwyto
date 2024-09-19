@@ -1,5 +1,5 @@
 import axios from "axios";
-import ICourse from "../types/ICourse"; // Certifique-se de que o caminho está correto para o tipo ICourse
+import ICourse from "../types/ICourse";
 
 class Api {
   static baseUrl = import.meta.env.VITE_API_URL;
