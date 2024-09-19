@@ -1,30 +1,27 @@
-import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import CourseCard from "./components/Atoms/CourseCard";
 import Api from "./api/course";
 import ICourse from "./types/ICourse";
 import "./App.css";
 
 function App() {
-  const [courses, setCourses] = useState<ICourse[]>([]);
+  const {
+    data: courses = [],
+    isLoading,
+    isError,
+    error,
+  } = useQuery<ICourse[], Error>({
+    queryKey: ["courses"],
+    queryFn: Api.getApiData,
+  });
 
-  useEffect(() => {
-    let mounted = true;
+  if (isLoading) {
+    return <div>Carregando...</div>;
+  }
 
-    Api.getApiData()
-      .then((items) => {
-        if (mounted) {
-          console.log("Dados da API:", items);
-          setCourses(items);
-        }
-      })
-      .catch((error) => {
-        console.error("Erro ao buscar os dados da API:", error);
-      });
-
-    return () => {
-      mounted = false;
-    };
-  }, []);
+  if (isError) {
+    return <div>Erro ao carregar cursos: {(error as Error).message}</div>;
+  }
 
   return (
     <>
