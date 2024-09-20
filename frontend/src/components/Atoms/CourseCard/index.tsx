@@ -49,7 +49,6 @@ export default function CourseCard({ course }: CourseCardProps) {
                   {course.description}
                 </Text>
               </Box>
-              {/* Add more details (like instructor, duration, etc.) if needed */}
             </Stack>
           </CardBody>
         </Box>

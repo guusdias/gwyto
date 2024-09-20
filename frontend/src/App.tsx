@@ -1,4 +1,4 @@
-import ListingCourses from "./components/Organisms/ListingCourses";
+import { ListingCourses } from "./components/Organisms/ListingCourses";
 import "./App.css";
 
 function App() {
@@ -6,7 +6,7 @@ function App() {
     <>
       <div>OI</div>
       <div>
-        <ListingCourses></ListingCourses>
+        <ListingCourses />
       </div>
     </>
   );
