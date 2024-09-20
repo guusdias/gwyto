@@ -3,9 +3,14 @@ class Api::V1::CoursesController < ApplicationController
 
   # GET /courses
   def index
-    @courses = Course.all
+    @courses = Course.page(params[:page]).per(3)
 
-    render json: @courses
+      render json: {
+        courses: @courses,
+        current_page: @courses.current_page,
+        total_pages: @courses.total_pages,
+        total_count: @courses.total_count
+      }
   end
 
   # GET /courses/1
@@ -39,12 +44,11 @@ class Api::V1::CoursesController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
+
     def set_course
       @course = Course.find(params[:id])
     end
 
-    # Only allow a list of trusted parameters through.
     def course_params
       params.require(:course).permit(:title, :description, :start_date, :end_date, :total_video_size, :image_url)
     end
