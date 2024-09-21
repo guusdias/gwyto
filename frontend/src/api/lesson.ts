@@ -9,7 +9,7 @@ class ApiLesson {
     lesson: ILessonCreate
   ): Promise<ILesson> {
     return axios
-      .post(`${ApiLesson.baseUrl}/courses/${courseId}/lessons`, lesson)
+      .post(`${ApiLesson.baseUrl}/${courseId}/lessons`, lesson)
       .then((response) => response.data);
   }
 
@@ -19,16 +19,13 @@ class ApiLesson {
     lesson: Partial<ILesson>
   ): Promise<ILesson> {
     return axios
-      .put(
-        `${ApiLesson.baseUrl}/courses/${courseId}/lessons/${lessonId}`,
-        lesson
-      )
+      .put(`${ApiLesson.baseUrl}/${courseId}/lessons/${lessonId}`, lesson)
       .then((response) => response.data);
   }
 
   static async deleteLesson(courseId: number, lessonId: number): Promise<void> {
     return axios
-      .delete(`${ApiLesson.baseUrl}/courses/${courseId}/lessons/${lessonId}`)
+      .delete(`${ApiLesson.baseUrl}/${courseId}/lessons/${lessonId}`)
       .then((response) => response.data);
   }
 }
