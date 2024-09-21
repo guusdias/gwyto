@@ -19,6 +19,13 @@ class Api::V1::CoursesController < ApplicationController
   }
   end
 
+  # GET /courses/totalVideoSum
+ def totalVideoSum
+  total_video_size = Course.sum(:total_video_size)
+  puts "Total video size sum: #{total_video_size}" # Adicione esse log para verificar o valor
+  render json: { storage: total_video_size }
+end
+
 
   # GET /courses/1
   def show

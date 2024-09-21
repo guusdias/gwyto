@@ -28,6 +28,16 @@ class Api {
       });
   }
 
+  static async getCoursesStorageSum() {
+    return axios
+      .get(`${Api.baseUrl}/totalVideoSum`)
+      .then((response) => response.data)
+      .catch((error) => {
+        console.error("Erro ao obter cursos:", error);
+        throw error;
+      });
+  }
+
   static async createCourse(course: ICourseCreate) {
     return axios
       .post(Api.baseUrl, course)

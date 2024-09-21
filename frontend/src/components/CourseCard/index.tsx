@@ -1,15 +1,4 @@
-import {
-  Card,
-  CardHeader,
-  CardBody,
-  Heading,
-  Stack,
-  StackDivider,
-  Box,
-  Text,
-  Image,
-  Flex,
-} from "@chakra-ui/react";
+import { Card, Flex, Heading, Text, Image } from "@chakra-ui/react";
 import ICourse from "../../types/ICourse";
 import ModalEdit from "../ModalEdit";
 
@@ -20,40 +9,33 @@ interface CourseCardProps {
 export function CourseCard({ course }: CourseCardProps) {
   return (
     <>
-      <Card>
+      <Card boxShadow="md" borderRadius="md" overflow="hidden">
         <Flex
           direction={{ base: "column", md: "row" }}
           align={{ base: "center", md: "flex-start" }}
           gap={4}
           p={4}
         >
-          <Box boxSize={{ base: "xs", md: "sm" }} flexShrink={0}>
-            <Image
-              src={
-                course.image_url ||
-                "https://www.contentviewspro.com/wp-content/uploads/2017/07/default_image.png"
-              }
-              alt={`${course.title}`}
-              objectFit="fill"
-              borderRadius="md"
-            />
-          </Box>
+          <Image
+            src={
+              course.image_url ||
+              "https://www.contentviewspro.com/wp-content/uploads/2017/07/default_image.png"
+            }
+            objectFit="cover"
+            height="200px"
+            alt={`${course.title}`}
+            transition="transform 0.3s ease-in-out"
+            _hover={{ transform: "scale(1.02)" }}
+          />
+          <Flex textAlign="left" mt="4" direction="column">
+            <Heading as="h3" fontSize="xl" fontWeight="bold" color={"gray.800"}>
+              {course.title}
+            </Heading>
 
-          <Box flex="1">
-            <CardHeader>
-              <Heading size="lg">{course.title}</Heading>
-            </CardHeader>
-
-            <CardBody>
-              <Stack divider={<StackDivider />} spacing={4}>
-                <Box>
-                  <Text mt={2} fontSize="md">
-                    {course.description}
-                  </Text>
-                </Box>
-              </Stack>
-            </CardBody>
-          </Box>
+            <Text mt={2} fontSize="md">
+              {course.description}
+            </Text>
+          </Flex>
           <ModalEdit
             id={course.id}
             title={course.title}
