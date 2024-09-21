@@ -31,9 +31,11 @@ export function MenuToggle({ onEdit, id }: MenuToggleProps) {
 
   return (
     <Menu>
-      <MenuButton as={Button} rightIcon={<SlArrowDown />}>
-        Actions
-      </MenuButton>
+      <MenuButton
+        as={Button}
+        iconSpacing={0}
+        rightIcon={<SlArrowDown />}
+      ></MenuButton>
       <MenuList>
         <MenuItem onClick={onEdit}>Ver</MenuItem>
         <MenuItem onClick={handleDelete}>Delete</MenuItem>

@@ -33,7 +33,7 @@ export function CourseCard({ course }: CourseCardProps) {
                 course.image_url ||
                 "https://www.contentviewspro.com/wp-content/uploads/2017/07/default_image.png"
               }
-              alt={`Image for course: ${course.title}`}
+              alt={`${course.title}`}
               objectFit="fill"
               borderRadius="md"
             />
@@ -47,9 +47,6 @@ export function CourseCard({ course }: CourseCardProps) {
             <CardBody>
               <Stack divider={<StackDivider />} spacing={4}>
                 <Box>
-                  <Heading size="sm" textTransform="uppercase">
-                    Description
-                  </Heading>
                   <Text mt={2} fontSize="md">
                     {course.description}
                   </Text>
