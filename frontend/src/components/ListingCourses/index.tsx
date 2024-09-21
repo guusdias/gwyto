@@ -6,6 +6,7 @@ import { getDateFormatter } from "../../helpers/getDateFormatter";
 import { useDebounce } from "../../hooks/useDebounce";
 import { Flex, Button, Text, Box, Stack, SimpleGrid } from "@chakra-ui/react";
 import { MdNavigateNext, MdNavigateBefore } from "react-icons/md";
+import { IoCreateOutline } from "react-icons/io5";
 import ICourse from "../../types/ICourse";
 import Api from "../../api/course";
 
@@ -69,7 +70,7 @@ export function ListingCourses({ onCreate }: ModalOpenProps) {
           name="titleFilter"
           value={titleFilter}
           onChange={handleTitleChange}
-          placeholder="Pesquisar pelo título do curso"
+          placeholder="Pesquisar"
         />
         <Box alignContent="end">
           <Button
@@ -86,10 +87,13 @@ export function ListingCourses({ onCreate }: ModalOpenProps) {
             onClick={onCreate}
           >
             Criar curso
+            <Box mb={1} ml={2}>
+              <IoCreateOutline size={20} />
+            </Box>
           </Button>
         </Box>
       </Stack>
-      <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing="40px">
+      <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing="30px">
         {courses.map((course) => (
           <CourseCard key={course.id} course={course} />
         ))}
