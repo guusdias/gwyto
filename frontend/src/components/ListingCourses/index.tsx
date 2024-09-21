@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Flex, Button, Text } from "@chakra-ui/react";
 import Api from "../../api/course";
 import ICourse from "../../types/ICourse";
-import { CourseCard } from "../Atoms/CourseCard";
+import { CourseCard } from "../CourseCard";
 
 interface PaginationData {
   courses: ICourse[];
@@ -19,9 +19,7 @@ export function ListingCourses() {
     queryFn: () => Api.getApiData(page),
   });
 
-  if (isLoading) {
-    return <div>Carregando...</div>;
-  }
+  if (isLoading) return <div>Carregando...</div>;
 
   if (isError) {
     return <div>Erro ao carregar cursos: {(error as Error).message}</div>;

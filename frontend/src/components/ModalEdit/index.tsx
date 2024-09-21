@@ -79,7 +79,7 @@ export default function ModalEdit({
 
   return (
     <>
-      <MenuToggle onEdit={onOpen} />
+      <MenuToggle id={id} onEdit={onOpen} />
 
       <Modal isOpen={isOpen} onClose={onClose} size="3xl">
         <ModalOverlay />

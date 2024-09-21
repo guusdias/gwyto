@@ -10,8 +10,8 @@ import {
   Image,
   Flex,
 } from "@chakra-ui/react";
-import ICourse from "../../../types/ICourse";
-import ModalEdit from "../../ModalEdit";
+import ICourse from "../../types/ICourse";
+import ModalEdit from "../ModalEdit";
 
 interface CourseCardProps {
   course: ICourse;
