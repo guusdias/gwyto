@@ -3,15 +3,23 @@ class Api::V1::CoursesController < ApplicationController
 
   # GET /courses
   def index
-    @courses = Course.page(params[:page]).per(3)
+  @courses = Course.where(nil)
 
-      render json: {
-        courses: @courses,
-        current_page: @courses.current_page,
-        total_pages: @courses.total_pages,
-        total_count: @courses.total_count
-      }
+  if params[:end_date].present?
+    @courses = @courses.where('end_date <= ?', params[:end_date])
+  else
+    @courses = @courses.where('end_date >= ?', Date.current)
   end
+
+  @courses = @courses.page(params[:page]).per(3)
+
+  render json: {
+    courses: @courses,
+    current_page: @courses.current_page,
+    total_pages: @courses.total_pages,
+    total_count: @courses.total_count
+  }
+end
 
   # GET /courses/1
   def show

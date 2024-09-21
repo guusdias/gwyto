@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { Flex, Button, Text } from "@chakra-ui/react";
+import { Flex, Button, Text, Box } from "@chakra-ui/react";
 import Api from "../../api/course";
 import ICourse from "../../types/ICourse";
 import { CourseCard } from "../CourseCard";
+import { InputField } from "../Atoms/InputField";
 
 interface PaginationData {
   courses: ICourse[];
@@ -13,11 +14,16 @@ interface PaginationData {
 
 export function ListingCourses() {
   const [page, setPage] = useState(1);
+  const [endDateFilter, setEndDateFilter] = useState<string | null>(null);
 
   const { data, isLoading, isError, error } = useQuery<PaginationData, Error>({
-    queryKey: ["courses", page],
-    queryFn: () => Api.getApiData(page),
+    queryKey: ["courses", page, endDateFilter],
+    queryFn: () => Api.getApiData(page, endDateFilter),
   });
+
+  const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEndDateFilter(e.target.value);
+  };
 
   if (isLoading) return <div>Carregando...</div>;
 
@@ -29,6 +35,16 @@ export function ListingCourses() {
 
   return (
     <Flex direction="column" gap={6}>
+      <Box mb={4}>
+        <InputField
+          type="date"
+          label=""
+          name="filter"
+          value={endDateFilter || ""}
+          onChange={handleDateChange}
+          placeholder="Filtrar por data de término"
+        />
+      </Box>
       {courses.map((course) => (
         <CourseCard key={course.id} course={course} />
       ))}

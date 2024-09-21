@@ -4,9 +4,17 @@ import ICourse from "../types/ICourse";
 class Api {
   static baseUrl = import.meta.env.VITE_API_URL;
 
-  static async getApiData(page: number = 1) {
+  static async getApiData(
+    page: number = 1,
+    endDateFilter: string | null = null
+  ) {
+    const params: { page: number; end_date?: string } = { page };
+    if (endDateFilter) {
+      params.end_date = endDateFilter;
+    }
+
     return axios
-      .get(`${Api.baseUrl}?page=${page}`)
+      .get(`${Api.baseUrl}`, { params })
       .then((response) => response.data)
       .catch((error) => {
         console.error("Erro ao obter cursos:", error);
