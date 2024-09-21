@@ -34,7 +34,10 @@ class Api {
       });
   }
 
-  static async updateCourse(id: number, course: ICourse) {
+  static async updateCourse(
+    id: number,
+    course: Partial<ICourse>
+  ): Promise<ICourse> {
     return axios
       .put(`${Api.baseUrl}/${id}`, course)
       .then((response) => response.data)

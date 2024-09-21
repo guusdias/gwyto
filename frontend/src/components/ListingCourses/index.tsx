@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Flex, Button, Text } from "@chakra-ui/react";
-import Api from "../../../api/course";
-import ICourse from "../../../types/ICourse";
-import CourseCard from "../../Atoms/CourseCard";
+import Api from "../../api/course";
+import ICourse from "../../types/ICourse";
+import { CourseCard } from "../Atoms/CourseCard";
 
 interface PaginationData {
   courses: ICourse[];

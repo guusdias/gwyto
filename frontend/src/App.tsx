@@ -1,10 +1,9 @@
-import { ListingCourses } from "./components/Organisms/ListingCourses";
+import { ListingCourses } from "./components/ListingCourses";
 import "./App.css";
 
 function App() {
   return (
     <>
-      <div>OI</div>
       <div>
         <ListingCourses />
       </div>
