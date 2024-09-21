@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { BsArrowUpRight } from "react-icons/bs";
+import { useNavigate } from "react-router-dom";
 import {
   Menu,
   MenuButton,
@@ -17,6 +18,8 @@ interface MenuToggleProps {
 }
 
 export function MenuToggle({ onEdit, id }: MenuToggleProps) {
+  const navigate = useNavigate();
+
   const useDeleteCourse = (id: number | string) => {
     const queryClient = useQueryClient();
 
@@ -35,6 +38,10 @@ export function MenuToggle({ onEdit, id }: MenuToggleProps) {
 
   const handleDelete = () => {
     deleteCourseMutation.mutate();
+  };
+
+  const handleViewCourse = () => {
+    navigate(`/course/${id}`);
   };
 
   return (
@@ -67,6 +74,7 @@ export function MenuToggle({ onEdit, id }: MenuToggleProps) {
         borderColor="black"
         boxShadow={"6px 6px 0 black"}
       >
+        <MenuItem onClick={handleViewCourse}>Acessar curso</MenuItem>
         <MenuItem onClick={onEdit}>Ver</MenuItem>
         <MenuItem onClick={handleDelete}>Delete</MenuItem>
       </MenuList>

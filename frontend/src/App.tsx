@@ -1,19 +1,15 @@
-import { ListingCourses } from "./components/ListingCourses";
-import ModalCreateCourse from "./components/ModalCreate";
-import { useDisclosure } from "@chakra-ui/react";
-import "./App.css";
-import Header from "./components/Atoms/Header";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import Home from "./pages/Home";
+import CourseDetails from "./pages/CourseDetails";
 
 function App() {
-  const { isOpen, onOpen, onClose } = useDisclosure();
   return (
-    <>
-      <div>
-        <Header />
-        <ListingCourses onCreate={onOpen} />
-        <ModalCreateCourse isOpen={isOpen} onClose={onClose} />
-      </div>
-    </>
+    <Router>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/course/:id" element={<CourseDetails />} />
+      </Routes>
+    </Router>
   );
 }
 
