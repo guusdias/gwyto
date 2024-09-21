@@ -3,12 +3,10 @@ class Api::V1::CoursesController < ApplicationController
 
   # GET /courses
   def index
-  @courses = Course.where(nil)
+  @courses = Course.where("end_date >= ?", Date.current)
 
-  if params[:end_date].present?
-    @courses = @courses.where('end_date <= ?', params[:end_date])
-  else
-    @courses = @courses.where('end_date >= ?', Date.current)
+  if params[:title].present?
+    @courses = @courses.where("LOWER(title) LIKE ?", "%#{params[:title].downcase}%")
   end
 
   @courses = @courses.page(params[:page]).per(3)
@@ -19,7 +17,8 @@ class Api::V1::CoursesController < ApplicationController
     total_pages: @courses.total_pages,
     total_count: @courses.total_count
   }
-end
+  end
+
 
   # GET /courses/1
   def show

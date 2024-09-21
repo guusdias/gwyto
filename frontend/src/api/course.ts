@@ -6,11 +6,17 @@ class Api {
 
   static async getApiData(
     page: number = 1,
-    endDateFilter: string | null = null
+    endDateFilter: string | null = null,
+    title: string = ""
   ) {
-    const params: { page: number; end_date?: string } = { page };
+    const params: { page: number; end_date?: string; title?: string } = {
+      page,
+    };
     if (endDateFilter) {
       params.end_date = endDateFilter;
+    }
+    if (title) {
+      params.title = title;
     }
 
     return axios

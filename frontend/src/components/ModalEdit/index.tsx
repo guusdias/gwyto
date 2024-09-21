@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useDisclosure } from "@chakra-ui/react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { MenuToggle } from "../MenuToggle";
-import { convertMbToGb } from "../../helpers/getConvertMbToMb";
+import { convertMbToGb } from "../../helpers/getConvertMbToMb.ts";
 import Api from "../../api/course";
 import ICourse from "../../types/ICourse";
 import {

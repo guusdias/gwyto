@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Flex, Button, Text, Box } from "@chakra-ui/react";
-import Api from "../../api/course";
-import ICourse from "../../types/ICourse";
 import { CourseCard } from "../CourseCard";
 import { InputField } from "../Atoms/InputField";
+import { getDateFormatter } from "../../helpers/getDateFormatter";
+import { useDebounce } from "../../hooks/useDebounce";
+import ICourse from "../../types/ICourse";
+import Api from "../../api/course";
 
 interface PaginationData {
   courses: ICourse[];
@@ -14,15 +16,25 @@ interface PaginationData {
 
 export function ListingCourses() {
   const [page, setPage] = useState(1);
-  const [endDateFilter, setEndDateFilter] = useState<string | null>(null);
+  const [endDateFilter, setEndDateFilter] = useState<string | null>(
+    "2024-06-30"
+  );
+  const [titleFilter, setTitleFilter] = useState<string>("");
+
+  const debouncedTitle = useDebounce(titleFilter, 500);
 
   const { data, isLoading, isError, error } = useQuery<PaginationData, Error>({
-    queryKey: ["courses", page, endDateFilter],
-    queryFn: () => Api.getApiData(page, endDateFilter),
+    queryKey: ["courses", page, endDateFilter, debouncedTitle],
+    queryFn: () => Api.getApiData(page, endDateFilter, debouncedTitle),
   });
 
   const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setEndDateFilter(e.target.value);
+    const formattedDate = getDateFormatter(e.target.value);
+    setEndDateFilter(formattedDate);
+  };
+
+  const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setTitleFilter(e.target.value);
   };
 
   if (isLoading) return <div>Carregando...</div>;
@@ -38,11 +50,21 @@ export function ListingCourses() {
       <Box mb={4}>
         <InputField
           type="date"
-          label=""
+          label="Data de Término"
           name="filter"
           value={endDateFilter || ""}
           onChange={handleDateChange}
           placeholder="Filtrar por data de término"
+        />
+      </Box>
+      <Box mb={4}>
+        <InputField
+          type="text"
+          label="Título do Curso"
+          name="titleFilter"
+          value={titleFilter}
+          onChange={handleTitleChange}
+          placeholder="Pesquisar pelo título do curso"
         />
       </Box>
       {courses.map((course) => (
