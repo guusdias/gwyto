@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { Flex, Button, Text, Box } from "@chakra-ui/react";
+import { Flex, Button, Text, Box, Stack } from "@chakra-ui/react";
 import { CourseCard } from "../CourseCard";
 import { InputField } from "../Atoms/InputField";
 import { getDateFormatter } from "../../helpers/getDateFormatter";
@@ -10,11 +10,15 @@ import Api from "../../api/course";
 
 interface PaginationData {
   courses: ICourse[];
-  current_page: number;
-  total_pages: number;
+  current_page?: number;
+  total_pages?: number;
 }
 
-export function ListingCourses() {
+interface ModalOpenProps {
+  onCreate: () => void;
+}
+
+export function ListingCourses({ onCreate }: ModalOpenProps) {
   const [page, setPage] = useState(1);
   const [endDateFilter, setEndDateFilter] = useState<string | null>(
     "2024-06-30"
@@ -57,7 +61,7 @@ export function ListingCourses() {
           placeholder="Filtrar por data de término"
         />
       </Box>
-      <Box mb={4}>
+      <Stack direction="row" mb={4}>
         <InputField
           type="text"
           label="Título do Curso"
@@ -66,7 +70,10 @@ export function ListingCourses() {
           onChange={handleTitleChange}
           placeholder="Pesquisar pelo título do curso"
         />
-      </Box>
+        <Box alignContent="end">
+          <Button onClick={onCreate}>Criar curso</Button>
+        </Box>
+      </Stack>
       {courses.map((course) => (
         <CourseCard key={course.id} course={course} />
       ))}
@@ -78,7 +85,7 @@ export function ListingCourses() {
         >
           Anterior
         </Button>
-        <Text>{`${data?.current_page}/${data?.total_pages}`}</Text>
+        <Text alignContent="center">{`${data?.current_page}/${data?.total_pages}`}</Text>
         <Button
           onClick={() => setPage((prev) => prev + 1)}
           isDisabled={data?.current_page === data?.total_pages}

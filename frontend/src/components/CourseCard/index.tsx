@@ -62,8 +62,8 @@ export function CourseCard({ course }: CourseCardProps) {
             title={course.title}
             description={course.description}
             storage={course.total_video_size}
-            startDate={course.start_date}
-            endDate={course.end_date}
+            startDate={course?.start_date}
+            endDate={course?.end_date}
           />
         </Flex>
       </Card>

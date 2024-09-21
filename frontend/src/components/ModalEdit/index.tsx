@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef } from "react";
 import { useDisclosure } from "@chakra-ui/react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { MenuToggle } from "../MenuToggle";
@@ -24,8 +24,8 @@ import {
 
 interface ModalProps {
   storage: number;
-  startDate: Date;
-  endDate: Date;
+  startDate?: Date | undefined;
+  endDate?: Date | undefined;
   id: number;
   title: string;
   description: string;
@@ -40,10 +40,9 @@ export default function ModalEdit({
   description,
 }: ModalProps) {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [formData, setFormData] = useState({
-    name: title,
-    description: description,
-  });
+
+  const nameRef = useRef<HTMLInputElement>(null);
+  const descriptionRef = useRef<HTMLInputElement>(null);
 
   const queryClient = useQueryClient();
 
@@ -58,18 +57,10 @@ export default function ModalEdit({
     },
   });
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
-  };
-
   const handleSave = () => {
     mutation.mutate({
-      title: formData.name,
-      description: formData.description,
+      title: nameRef.current?.value || title,
+      description: descriptionRef.current?.value || description,
       start_date: startDate,
       end_date: endDate,
       total_video_size: storage,
@@ -103,7 +94,9 @@ export default function ModalEdit({
                     Data de início:
                   </Text>
                   <Text fontSize="md" color="gray.800">
-                    {new Date(startDate).toLocaleDateString()}
+                    {startDate
+                      ? new Date(startDate).toLocaleDateString()
+                      : "N/A"}
                   </Text>
                 </HStack>
 
@@ -112,7 +105,7 @@ export default function ModalEdit({
                     Data de término:
                   </Text>
                   <Text fontSize="md" color="gray.800">
-                    {new Date(endDate).toLocaleDateString()}
+                    {endDate ? new Date(endDate).toLocaleDateString() : "N/A"}
                   </Text>
                 </HStack>
               </Stack>
@@ -122,8 +115,8 @@ export default function ModalEdit({
                 <FormLabel>Nome</FormLabel>
                 <Input
                   name="name"
-                  value={formData.name}
-                  onChange={handleInputChange}
+                  ref={nameRef}
+                  defaultValue={title}
                   placeholder="Digite o nome"
                 />
               </FormControl>
@@ -131,8 +124,8 @@ export default function ModalEdit({
                 <FormLabel>Descrição</FormLabel>
                 <Input
                   name="description"
-                  value={formData.description}
-                  onChange={handleInputChange}
+                  ref={descriptionRef}
+                  defaultValue={description}
                   placeholder="Digite a descrição"
                 />
               </FormControl>

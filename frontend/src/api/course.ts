@@ -1,5 +1,5 @@
 import axios from "axios";
-import ICourse from "../types/ICourse";
+import ICourse, { ICourseCreate } from "../types/ICourse";
 
 class Api {
   static baseUrl = import.meta.env.VITE_API_URL;
@@ -38,7 +38,7 @@ class Api {
       });
   }
 
-  static async createCourse(course: ICourse) {
+  static async createCourse(course: ICourseCreate) {
     return axios
       .post(Api.baseUrl, course)
       .then((response) => response.data)
