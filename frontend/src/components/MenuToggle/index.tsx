@@ -1,7 +1,16 @@
-import { Menu, MenuButton, MenuList, MenuItem, Button } from "@chakra-ui/react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { BsArrowUpRight } from "react-icons/bs";
+import {
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  Button,
+  Text,
+  useColorModeValue,
+  Flex,
+} from "@chakra-ui/react";
 import Api from "../../api/course";
-import { SlArrowDown } from "react-icons/sl";
 
 interface MenuToggleProps {
   onEdit: () => void;
@@ -33,10 +42,32 @@ export function MenuToggle({ onEdit, id }: MenuToggleProps) {
     <Menu>
       <MenuButton
         as={Button}
-        iconSpacing={0}
-        rightIcon={<SlArrowDown />}
-      ></MenuButton>
-      <MenuList>
+        width="100%"
+        iconSpacing={2}
+        bg="transparent"
+        sx={{
+          _hover: {
+            backgroundColor: "inherit",
+            boxShadow: "none",
+          },
+        }}
+      >
+        <Flex
+          flexDirection="row-reverse"
+          justifyContent="space-between"
+          alignItems="center"
+        >
+          <BsArrowUpRight />
+          <Text>Ver Mais</Text>
+        </Flex>
+      </MenuButton>
+
+      <MenuList
+        bg="white"
+        border={"1px"}
+        borderColor="black"
+        boxShadow={useColorModeValue("6px 6px 0 black", "6px 6px 0 cyan")}
+      >
         <MenuItem onClick={onEdit}>Ver</MenuItem>
         <MenuItem onClick={handleDelete}>Delete</MenuItem>
       </MenuList>

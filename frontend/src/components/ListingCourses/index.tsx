@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { Flex, Button, Text, Box, Stack } from "@chakra-ui/react";
+import { Flex, Button, Text, Box, Stack, SimpleGrid } from "@chakra-ui/react";
 import { CourseCard } from "../CourseCard";
 import { InputField } from "../Atoms/InputField";
 import { getDateFormatter } from "../../helpers/getDateFormatter";
@@ -74,10 +74,11 @@ export function ListingCourses({ onCreate }: ModalOpenProps) {
           <Button onClick={onCreate}>Criar curso</Button>
         </Box>
       </Stack>
-      {courses.map((course) => (
-        <CourseCard key={course.id} course={course} />
-      ))}
-
+      <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing="40px">
+        {courses.map((course) => (
+          <CourseCard key={course.id} course={course} />
+        ))}
+      </SimpleGrid>
       <Flex justify="center" gap={4} mt={4}>
         <Button
           onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
