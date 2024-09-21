@@ -74,7 +74,12 @@ export default function ModalEdit({
 
       <Modal isOpen={isOpen} onClose={onClose} size="3xl">
         <ModalOverlay />
-        <ModalContent>
+        <ModalContent
+          bg="white"
+          border={"1px"}
+          borderColor="black"
+          boxShadow="6px 6px 0 white"
+        >
           <ModalHeader>Editar Informações</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
@@ -118,6 +123,15 @@ export default function ModalEdit({
                   ref={nameRef}
                   defaultValue={title}
                   placeholder="Digite o nome"
+                  bg="white"
+                  border={"1px"}
+                  borderColor="black"
+                  boxShadow={"6px 6px 0 black"}
+                  _focus={{
+                    borderColor: "black",
+                    boxShadow: "6px 6px 0 grey",
+                    outline: "none",
+                  }}
                 />
               </FormControl>
               <FormControl>
@@ -127,16 +141,52 @@ export default function ModalEdit({
                   ref={descriptionRef}
                   defaultValue={description}
                   placeholder="Digite a descrição"
+                  bg="white"
+                  border={"1px"}
+                  borderColor="black"
+                  boxShadow={"6px 6px 0 black"}
+                  _focus={{
+                    borderColor: "black",
+                    boxShadow: "6px 6px 0 grey",
+                    outline: "none",
+                  }}
                 />
               </FormControl>
             </Stack>
           </ModalBody>
 
           <ModalFooter>
-            <Button colorScheme="blue" mr={3} onClick={handleSave}>
+            <Button
+              bg="white"
+              border={"1px"}
+              borderColor="black"
+              boxShadow={"6px 6px 0 black"}
+              mr={3}
+              onClick={handleSave}
+              sx={{
+                _hover: {
+                  backgroundColor: "inherit",
+                  boxShadow: "none",
+                },
+              }}
+            >
               Salvar
             </Button>
-            <Button variant="ghost" onClick={onClose}>
+            <Button
+              bg="black"
+              border={"1px"}
+              borderColor="white"
+              boxShadow={"6px 6px 0 black"}
+              sx={{
+                _hover: {
+                  backgroundColor: "black",
+                  boxShadow: "none",
+                },
+              }}
+              variant="ghost"
+              color="white"
+              onClick={onClose}
+            >
               Fechar
             </Button>
           </ModalFooter>

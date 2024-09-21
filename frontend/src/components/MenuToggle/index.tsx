@@ -7,7 +7,6 @@ import {
   MenuItem,
   Button,
   Text,
-  useColorModeValue,
   Flex,
 } from "@chakra-ui/react";
 import Api from "../../api/course";
@@ -66,7 +65,7 @@ export function MenuToggle({ onEdit, id }: MenuToggleProps) {
         bg="white"
         border={"1px"}
         borderColor="black"
-        boxShadow={useColorModeValue("6px 6px 0 black", "6px 6px 0 cyan")}
+        boxShadow={"6px 6px 0 black"}
       >
         <MenuItem onClick={onEdit}>Ver</MenuItem>
         <MenuItem onClick={handleDelete}>Delete</MenuItem>

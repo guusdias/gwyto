@@ -7,7 +7,6 @@ import {
   Img,
   Flex,
   Center,
-  useColorModeValue,
   HStack,
 } from "@chakra-ui/react";
 
@@ -27,7 +26,7 @@ export function CourseCard({ course }: CourseCardProps) {
         bg="white"
         border={"1px"}
         borderColor="black"
-        boxShadow={useColorModeValue("6px 6px 0 black", "6px 6px 0 cyan")}
+        boxShadow={"6px 6px 0 black"}
       >
         <Box h={"200px"} borderBottom={"1px"} borderColor="black">
           <Img

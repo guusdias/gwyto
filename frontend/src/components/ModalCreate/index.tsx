@@ -66,7 +66,12 @@ export default function ModalCreateCourse({
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="3xl">
       <ModalOverlay />
-      <ModalContent>
+      <ModalContent
+        bg="white"
+        border={"1px"}
+        borderColor="black"
+        boxShadow="6px 6px 0 white"
+      >
         <ModalHeader>Criar Curso</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
@@ -77,6 +82,15 @@ export default function ModalCreateCourse({
                 name="title"
                 ref={titleRef}
                 placeholder="Digite o título do curso"
+                bg="white"
+                border={"1px"}
+                borderColor="black"
+                boxShadow={"6px 6px 0 black"}
+                _focus={{
+                  borderColor: "black",
+                  boxShadow: "6px 6px 0 grey",
+                  outline: "none",
+                }}
               />
             </FormControl>
             <FormControl>
@@ -85,15 +99,50 @@ export default function ModalCreateCourse({
                 name="description"
                 ref={descriptionRef}
                 placeholder="Digite a descrição"
+                bg="white"
+                border={"1px"}
+                borderColor="black"
+                boxShadow={"6px 6px 0 black"}
+                _focus={{
+                  borderColor: "black",
+                  boxShadow: "6px 6px 0 grey",
+                  outline: "none",
+                }}
               />
             </FormControl>
             <FormControl>
               <FormLabel>Data de Início</FormLabel>
-              <Input type="date" name="start_date" ref={startDateRef} />
+              <Input
+                type="date"
+                name="start_date"
+                ref={startDateRef}
+                bg="white"
+                border={"1px"}
+                borderColor="black"
+                boxShadow={"6px 6px 0 black"}
+                _focus={{
+                  borderColor: "black",
+                  boxShadow: "6px 6px 0 grey",
+                  outline: "none",
+                }}
+              />
             </FormControl>
             <FormControl>
               <FormLabel>Data de Término</FormLabel>
-              <Input type="date" name="end_date" ref={endDateRef} />
+              <Input
+                type="date"
+                name="end_date"
+                ref={endDateRef}
+                bg="white"
+                border={"1px"}
+                borderColor="black"
+                boxShadow={"6px 6px 0 black"}
+                _focus={{
+                  borderColor: "black",
+                  boxShadow: "6px 6px 0 grey",
+                  outline: "none",
+                }}
+              />
             </FormControl>
             <FormControl>
               <FormLabel>URL da Imagem</FormLabel>
@@ -102,6 +151,15 @@ export default function ModalCreateCourse({
                 name="total_video_size"
                 ref={imageUrlRef}
                 placeholder="Digite o tamanho total do vídeo"
+                bg="white"
+                border={"1px"}
+                borderColor="black"
+                boxShadow={"6px 6px 0 black"}
+                _focus={{
+                  borderColor: "black",
+                  boxShadow: "6px 6px 0 grey",
+                  outline: "none",
+                }}
               />
             </FormControl>
             <FormControl>
@@ -111,16 +169,53 @@ export default function ModalCreateCourse({
                 name="total_video_size"
                 ref={videoSizeRef}
                 placeholder="Digite o tamanho total do vídeo"
+                bg="white"
+                border={"1px"}
+                borderColor="black"
+                boxShadow={"6px 6px 0 black"}
+                _focus={{
+                  borderColor: "black",
+                  boxShadow: "6px 6px 0 grey",
+                  outline: "none",
+                }}
               />
             </FormControl>
           </Stack>
         </ModalBody>
 
         <ModalFooter>
-          <Button colorScheme="blue" mr={3} onClick={handleSave}>
+          <Button
+            colorScheme="blue"
+            mr={3}
+            onClick={handleSave}
+            bg="black"
+            border={"1px"}
+            borderColor="white"
+            boxShadow={"6px 6px 0 black"}
+            sx={{
+              _hover: {
+                backgroundColor: "black",
+                boxShadow: "none",
+              },
+            }}
+          >
             Salvar
           </Button>
-          <Button variant="ghost" onClick={onClose}>
+          <Button
+            variant="ghost"
+            onClick={onClose}
+            bg="white"
+            border={"1px"}
+            borderColor="black"
+            boxShadow={"6px 6px 0 black"}
+            color="black"
+            sx={{
+              _hover: {
+                backgroundColor: "white",
+                boxShadow: "none",
+              },
+            }}
+          >
             Fechar
           </Button>
         </ModalFooter>

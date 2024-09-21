@@ -1,12 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
-import { Box, Flex, Text } from "@chakra-ui/react";
 import { convertMbToGb } from "../../../helpers/getConvertMbToMb";
-import { GiOwl } from "react-icons/gi";
+import { FaEarlybirds } from "react-icons/fa";
+import { Box, Flex, Text } from "@chakra-ui/react";
 import Api from "../../../api/course";
 
 interface StorageNumber {
   storage: number | string;
 }
+
 const Header = () => {
   const { data, isLoading, isError, error } = useQuery<StorageNumber, Error>({
     queryKey: ["courses"],
@@ -22,18 +23,31 @@ const Header = () => {
   const storage = data?.storage || 0;
 
   return (
-    <Box as="header" bg="teal.500" py={4} px={8} shadow="md" mb={10}>
+    <Box
+      as="header"
+      bg="black"
+      border={"1px"}
+      borderColor="white"
+      boxShadow={"6px 6px 0 black"}
+      py={4}
+      px={8}
+      mb={10}
+    >
       <Flex justify="space-between" align="center" maxW="1200px" mx="auto">
         <Flex alignItems="center" gap={4}>
-          <GiOwl width="200px" fontWeight="bold" color="white" />
-          <Text fontSize="xl" fontWeight="bold" color="white">
+          <FaEarlybirds size={30} fontWeight="bold" color="white" />
+          <Text fontSize="3xl" fontWeight="bold" color="white">
             Gwyto
           </Text>
         </Flex>
 
         <Flex gap={4}>
-          <Text>Armazenamento: </Text>
-          <Text>{convertMbToGb(storage as number)}</Text>
+          <Text color="white" fontSize="sm" fontWeight="bold">
+            Storage:
+          </Text>
+          <Text color="white" fontSize="sm" fontWeight="bold">
+            {convertMbToGb(storage as number)}
+          </Text>
         </Flex>
       </Flex>
     </Box>

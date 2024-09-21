@@ -26,6 +26,14 @@ export const InputField = ({
         value={value}
         onChange={onChange}
         placeholder={placeholder}
+        bg="white"
+        border={"1px"}
+        borderColor="black"
+        _focus={{
+          borderColor: "black",
+          boxShadow: "6px 6px 0 grey",
+          outline: "none",
+        }}
       />
     </FormControl>
   );

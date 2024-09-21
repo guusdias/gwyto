@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { Flex, Button, Text, Box, Stack, SimpleGrid } from "@chakra-ui/react";
 import { CourseCard } from "../CourseCard";
 import { InputField } from "../Atoms/InputField";
 import { getDateFormatter } from "../../helpers/getDateFormatter";
 import { useDebounce } from "../../hooks/useDebounce";
+import { Flex, Button, Text, Box, Stack, SimpleGrid } from "@chakra-ui/react";
+import { MdNavigateNext, MdNavigateBefore } from "react-icons/md";
 import ICourse from "../../types/ICourse";
 import Api from "../../api/course";
 
@@ -71,7 +72,21 @@ export function ListingCourses({ onCreate }: ModalOpenProps) {
           placeholder="Pesquisar pelo título do curso"
         />
         <Box alignContent="end">
-          <Button onClick={onCreate}>Criar curso</Button>
+          <Button
+            bg="black"
+            border={"1px"}
+            borderColor="white"
+            sx={{
+              _hover: {
+                backgroundColor: "black",
+                boxShadow: "none",
+              },
+            }}
+            color="white"
+            onClick={onCreate}
+          >
+            Criar curso
+          </Button>
         </Box>
       </Stack>
       <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing="40px">
@@ -79,19 +94,42 @@ export function ListingCourses({ onCreate }: ModalOpenProps) {
           <CourseCard key={course.id} course={course} />
         ))}
       </SimpleGrid>
-      <Flex justify="center" gap={4} mt={4}>
+      <Flex
+        justify="center"
+        align="center"
+        alignSelf="end"
+        gap={6}
+        mt={6}
+        width="fit-content"
+        borderWidth="1px"
+        borderColor="black"
+      >
         <Button
           onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
           isDisabled={page === 1}
+          bg="black"
+          color="white"
+          borderRadius="none"
+          _hover={{ bg: "blackAlpha.800" }}
+          _disabled={{ bg: "gray.400", cursor: "not-allowed", color: "white" }}
         >
-          Anterior
+          <MdNavigateBefore size={20} color="white" />
         </Button>
-        <Text alignContent="center">{`${data?.current_page}/${data?.total_pages}`}</Text>
+
+        <Text fontSize="lg" fontWeight="medium">
+          {`${data?.current_page} | ${data?.total_pages}`}
+        </Text>
+
         <Button
           onClick={() => setPage((prev) => prev + 1)}
           isDisabled={data?.current_page === data?.total_pages}
+          bg="black"
+          color="white"
+          borderRadius="none"
+          _hover={{ bg: "blackAlpha.800" }}
+          _disabled={{ bg: "gray.400", cursor: "not-allowed", color: "white" }}
         >
-          Próxima
+          <MdNavigateNext size={20} color="white" />
         </Button>
       </Flex>
     </Flex>
