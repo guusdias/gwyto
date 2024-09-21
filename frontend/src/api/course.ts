@@ -28,16 +28,6 @@ class Api {
       });
   }
 
-  static async getCourse(id: number) {
-    return axios
-      .get(`${Api.baseUrl}/${id}`)
-      .then((response) => response.data)
-      .catch((error) => {
-        console.error(`Erro ao obter curso com ID ${id}:`, error);
-        throw error;
-      });
-  }
-
   static async createCourse(course: ICourseCreate) {
     return axios
       .post(Api.baseUrl, course)
