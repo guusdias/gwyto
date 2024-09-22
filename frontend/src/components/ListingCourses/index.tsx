@@ -83,8 +83,8 @@ export function ListingCourses({ onCreate }: ModalOpenProps) {
               },
             }}
             color="white"
-            onClick={onCreate}
             borderRadius={"unset"}
+            onClick={onCreate}
           >
             Criar curso
             <Box mb={1} ml={2}>

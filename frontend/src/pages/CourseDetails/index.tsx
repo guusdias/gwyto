@@ -3,11 +3,9 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { IoIosArrowBack } from "react-icons/io";
 import { FaRegTrashAlt, FaEdit, FaCheck } from "react-icons/fa";
-
 import ICourse, { ILesson } from "../../types/ICourse";
 import ApiLesson from "../../api/lesson";
 import Api from "../../api/course";
-
 import {
   Box,
   Heading,
@@ -19,12 +17,16 @@ import {
   IconButton,
   Input,
   Image,
+  useDisclosure,
 } from "@chakra-ui/react";
+import ModalCreate from "../../components/ModalCreate";
 
 const CourseDetails = () => {
   const { id } = useParams<{ id: string }>();
   const queryClient = useQueryClient();
   const navigate = useNavigate();
+
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const urlRef = useRef<HTMLInputElement>(null);
   const sizeRef = useRef<HTMLInputElement>(null);
@@ -110,6 +112,10 @@ const CourseDetails = () => {
 
   return (
     <Flex p={5} flexDirection="column">
+      <Text fontWeight={"bold"}>
+        {"* Cuidado com o cache, atualize a página"}
+      </Text>
+
       <Button
         alignSelf={"start"}
         leftIcon={<IoIosArrowBack />}
@@ -146,6 +152,27 @@ const CourseDetails = () => {
           </Text>
         </Box>
       </Flex>
+      <Button
+        onClick={onOpen}
+        mb={2}
+        mt={2}
+        color="white"
+        bg="black"
+        border="1px"
+        borderColor="white"
+        boxShadow="6px 6px 0 black"
+        _hover={{ bg: "blackAlpha.800" }}
+        borderRadius="unset"
+        alignSelf="start"
+      >
+        Criar Nova Aula
+      </Button>
+      <ModalCreate
+        isOpen={isOpen}
+        onClose={onClose}
+        mode="lesson"
+        courseId={Number(id)}
+      />
       <Heading
         textAlign={"left"}
         size="md"
