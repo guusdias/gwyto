@@ -1,7 +1,57 @@
+# Gwyto - The right place to learn about entrepreneurship
 
-# Course and Lessons Management API
 
-Este projeto é uma API construída em Ruby on Rails para gerenciamento de cursos e suas respectivas aulas. A API permite a criação, atualização, exclusão e visualização de cursos e aulas, bem como o cálculo do total de tamanho de vídeo de cada curso.
+Instruções para Rodar o Projeto
+
+#### 1. **Clone o repositório**
+
+```
+git clone https://github.com/seu-usuario/gwyto.git
+cd gwyto
+```
+
+#### 2. **Configurar Variáveis de Ambiente**
+
+Crie o arquivo `.env` na raiz do projeto, com as variáveis de ambiente necessárias. Exemplo:
+
+```
+RAILS_ENV=production
+VITE_API_URL=http://localhost:3000/api/v1/courses
+```
+
+#### 3. **Build da Imagem Docker**
+
+Para construir a imagem Docker, execute o comando:
+
+```bash
+docker build -t my-app .
+```
+
+#### 4. **Rodar as Migrações**
+
+Depois que a imagem for construída, é necessário rodar as migrações do banco de dados:
+
+```bash
+docker run -it --rm my-app bundle exec rails db:migrate
+```
+
+#### 5. **Iniciar o Container**
+
+Agora você pode iniciar o container do projeto:
+
+```bash
+docker run -p 3000:3000 my-app
+```
+
+Isso iniciará o servidor Rails na porta 3000, e o frontend estará disponível na mesma porta.
+
+#### 6. **Acessar o Projeto**
+
+Abra o navegador e acesse:
+
+```
+http://localhost:3000
+```
 
 ## Funcionalidades
 
@@ -21,36 +71,6 @@ Este projeto é uma API construída em Ruby on Rails para gerenciamento de curso
 - **POST /api/v1/courses/:course_id/lessons**: Cria uma nova aula para um curso específico.
 - **PATCH/PUT /api/v1/courses/:course_id/lessons/:id**: Atualiza uma aula existente.
 - **DELETE /api/v1/courses/:course_id/lessons/:id**: Exclui uma aula.
-
-## Instalação
-
-1. Clone este repositório:
-
-   ```bash
-   git clone git@github.com:guusdias/gwyto.git
-   cd gwyto
-   ```
-
-2. Instale as dependências do projeto:
-
-   ```bash
-   bundle install
-   ```
-
-3. Configure o banco de dados:
-
-   ```bash
-   rails db:create
-   rails db:migrate
-   ```
-
-4. Inicie o servidor:
-
-   ```bash
-   rails server
-   ```
-
-5. A API estará disponível em: `http://localhost:3000/api/v1`
 
 ## Estrutura do Projeto
 
