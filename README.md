@@ -6,7 +6,7 @@ Instruções para Rodar o Projeto
 #### 1. **Clone o repositório**
 
 ```
-git clone https://github.com/seu-usuario/gwyto.git
+git clone https://github.com/guusdias/gwyto.git
 cd gwyto
 ```
 
