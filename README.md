@@ -1,6 +1,5 @@
 # Gwyto - The right place to learn about entrepreneurship
 
-Este projeto é uma API construída em Ruby on Rails para gerenciamento de cursos e suas respectivas aulas. A API permite a criação, atualização, exclusão e visualização de cursos e aulas, bem como o cálculo do total de tamanho de vídeo de cada curso.
 
 Instruções para Rodar o Projeto
 
