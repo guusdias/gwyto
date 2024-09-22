@@ -29,6 +29,7 @@ export const InputField = ({
         bg="white"
         border={"1px"}
         borderColor="black"
+        borderRadius={"unset"}
         _focus={{
           borderColor: "black",
           boxShadow: "6px 6px 0 grey",

@@ -108,14 +108,12 @@ const CourseDetails = () => {
     return <Text>Curso não encontrado</Text>;
   }
 
-  console.log(course);
-
   return (
     <Flex p={5} flexDirection="column">
       <Button
         alignSelf={"start"}
         leftIcon={<IoIosArrowBack />}
-        colorScheme="teal"
+        color="white"
         onClick={() => navigate("/")}
         mb={4}
         bg="black"
@@ -123,6 +121,7 @@ const CourseDetails = () => {
         borderColor="white"
         boxShadow="6px 6px 0 black"
         _hover={{ bg: "blackAlpha.800" }}
+        borderRadius={"unset"}
       >
         Voltar à Página Inicial
       </Button>
@@ -134,75 +133,88 @@ const CourseDetails = () => {
             "https://www.contentviewspro.com/wp-content/uploads/2017/07/default_image.png"
           }
           alt={course.title}
-          mr={4}
+          maxWidth={["100%", "100%", "50%"]}
+          mr={[0, 0, 4]}
+          mb={[4, 4, 0]}
         />
         <Box mt={10}>
-          <Heading fontSize={50} textAlign={"left"} mb={10}>
+          <Heading fontSize={["3xl", "4xl", "5xl"]} textAlign="left" mb={4}>
             {course.title}
           </Heading>
-          <Text textAlign={"left"} fontSize={20}>
+          <Text textAlign="left" fontSize={["md", "lg", "xl"]}>
             {course.description}
           </Text>
         </Box>
       </Flex>
-      <Heading fontSize={40} textAlign={"left"} size="md" mt={6} mb={6}>
+      <Heading
+        textAlign={"left"}
+        size="md"
+        mt={6}
+        mb={6}
+        fontSize={["md", "lg", "xl"]}
+      >
         Aulas
       </Heading>
-      <Stack
-        spacing={0}
-        bg="white"
-        border="1px"
-        borderColor="black"
-        boxShadow="6px 6px 0 black"
-      >
+      <Stack spacing={0} bg="white" border="1px" borderColor="black">
         {course.lessons?.map((lesson: ILesson, index) => (
           <Flex
             key={lesson.id}
-            p={4}
+            p={3}
             borderWidth={1}
             borderRadius="0px"
             bg="white"
             border="1px"
             borderColor="black"
-            flexDirection={"row"}
-            justifyContent={"space-between"}
+            flexDirection={["column", "row"]}
+            justifyContent="space-between"
+            alignItems={["flex-start", "center"]}
+            width={["110%", "auto"]}
+            boxShadow="6px 6px 0 black"
           >
             <Flex
               alignItems="center"
-              flexDirection={"row"}
-              justifyContent={"space-between"}
-              gap={4}
+              flexDirection={["column", "row"]}
+              justifyContent="space-between"
+              gap={2}
+              mb={[2, 0]}
+              width={["100%", "auto"]}
             >
-              <Text>
+              <Text fontSize={["sm", "md"]}>
                 {editLessonId === lesson.id ? (
-                  <Input ref={urlRef} defaultValue={lesson.url} />
+                  <Input ref={urlRef} defaultValue={lesson.url} size="sm" />
                 ) : (
                   <Button
                     variant="link"
                     onClick={() => setSelectedLesson(lesson)}
-                    color={"black"}
-                    textDecoration={"underline"}
+                    color="black"
+                    textDecoration="underline"
+                    fontSize={["sm", "md"]}
                   >
                     {`Aula 0${index + 1} - ${lesson.url} `}
                   </Button>
                 )}
               </Text>
-              <Text>
+              <Text fontSize={["sm", "md"]}>
                 {editLessonId === lesson.id ? (
-                  <Input ref={sizeRef} defaultValue={lesson.size.toString()} />
+                  <Input
+                    ref={sizeRef}
+                    defaultValue={lesson.size.toString()}
+                    size="sm"
+                  />
                 ) : (
                   `${lesson.size} MB`
                 )}
               </Text>
             </Flex>
 
-            <Flex mt={2}>
+            <Flex mt={[2, 0]}>
               {editLessonId === lesson.id ? (
                 <Button
                   leftIcon={<FaCheck />}
                   colorScheme="black"
-                  color={"black"}
+                  color="black"
                   onClick={() => handleSaveLesson(lesson)}
+                  size="sm"
                 >
                   Salvar
                 </Button>
@@ -212,20 +224,23 @@ const CourseDetails = () => {
                     aria-label="Editar Aula"
                     icon={<FaEdit />}
                     mr={2}
-                    bgColor={"black"}
-                    color={"white"}
-                    borderColor={"white"}
+                    bgColor="black"
+                    color="white"
+                    borderColor="white"
                     borderWidth={2}
                     boxShadow="3px 3px 0 black"
                     borderRadius="unset"
+                    _hover={{ bg: "black" }}
                     onClick={() => handleEditLesson(lesson)}
+                    size="sm"
                   />
                   <IconButton
                     aria-label="Excluir Aula"
                     icon={<FaRegTrashAlt />}
                     colorScheme="black"
-                    color={"black"}
+                    color="black"
                     onClick={() => handleDeleteLesson(lesson.id)}
+                    size="sm"
                   />
                 </>
               )}
@@ -236,16 +251,23 @@ const CourseDetails = () => {
 
       {selectedLesson && (
         <Box mt={6}>
-          <Heading size="md" fontSize={30}>
+          <Heading size="md" fontSize={["xl", "2xl", "3xl"]} mb={3}>
             Vídeo da Aula
           </Heading>
-          <iframe
-            src={selectedLesson.url}
-            width="100%"
-            height="400px"
-            title="Aula Vídeo"
-            allowFullScreen
-          ></iframe>
+          <Box position="relative" paddingTop="56.25%">
+            <iframe
+              src={selectedLesson.url}
+              style={{
+                position: "absolute",
+                top: 0,
+                left: 0,
+                width: "100%",
+                height: "100%",
+              }}
+              title="Aula Vídeo"
+              allowFullScreen
+            ></iframe>
+          </Box>
         </Box>
       )}
     </Flex>
