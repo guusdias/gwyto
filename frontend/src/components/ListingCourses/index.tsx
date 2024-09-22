@@ -76,7 +76,6 @@ export function ListingCourses({ onCreate }: ModalOpenProps) {
           <Button
             bg="black"
             border={"1px"}
-            borderColor="white"
             sx={{
               _hover: {
                 backgroundColor: "black",
@@ -84,6 +83,7 @@ export function ListingCourses({ onCreate }: ModalOpenProps) {
               },
             }}
             color="white"
+            borderRadius={"unset"}
             onClick={onCreate}
           >
             Criar curso

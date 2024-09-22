@@ -1,7 +1,8 @@
 import { useRef } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { ICourseCreate } from "../../types/ICourse";
+import { ICourseCreate, ILessonCreate } from "../../types/ICourse";
 import Api from "../../api/course";
+import ApiLesson from "../../api/lesson";
 import {
   Modal,
   ModalOverlay,
@@ -18,25 +19,30 @@ import {
   useBreakpointValue,
 } from "@chakra-ui/react";
 
-interface ModalCreateCourseProps {
+interface ModalCreateProps {
   isOpen: boolean;
   onClose: () => void;
+  mode: "course" | "lesson";
+  courseId?: number;
 }
 
-export default function ModalCreateCourse({
+export default function ModalCreate({
   isOpen,
   onClose,
-}: ModalCreateCourseProps) {
+  mode,
+  courseId,
+}: ModalCreateProps) {
   const titleRef = useRef<HTMLInputElement>(null);
   const descriptionRef = useRef<HTMLInputElement>(null);
   const startDateRef = useRef<HTMLInputElement>(null);
   const endDateRef = useRef<HTMLInputElement>(null);
-  const videoSizeRef = useRef<HTMLInputElement>(null);
   const imageUrlRef = useRef<HTMLInputElement>(null);
+  const urlRef = useRef<HTMLInputElement>(null);
+  const sizeRef = useRef<HTMLInputElement>(null);
 
   const queryClient = useQueryClient();
 
-  const mutation = useMutation<ICourseCreate, Error, ICourseCreate>({
+  const courseMutation = useMutation<ICourseCreate, Error, ICourseCreate>({
     mutationFn: (newCourse: ICourseCreate) => Api.createCourse(newCourse),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["courses"] });
@@ -46,21 +52,39 @@ export default function ModalCreateCourse({
     },
   });
 
+  const lessonMutation = useMutation<ILessonCreate, Error, ILessonCreate>({
+    mutationFn: (newLesson: ILessonCreate) => {
+      if (!courseId) throw new Error("ID do curso não encontrado");
+      return ApiLesson.createLesson(courseId, newLesson);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["course", courseId] });
+    },
+    onError: (error: Error) => {
+      console.error("Erro ao criar aula:", error.message);
+    },
+  });
+
   const handleSave = () => {
-    mutation.mutate({
-      title: titleRef.current?.value || "",
-      description: descriptionRef.current?.value || "",
-      image_url: imageUrlRef.current?.value || "",
-      start_date: startDateRef.current?.value
-        ? new Date(startDateRef.current.value)
-        : undefined,
-      end_date: endDateRef.current?.value
-        ? new Date(endDateRef.current.value)
-        : undefined,
-      total_video_size: videoSizeRef.current?.value
-        ? parseInt(videoSizeRef.current?.value, 10)
-        : 0,
-    });
+    if (mode === "course") {
+      courseMutation.mutate({
+        title: titleRef.current?.value || "",
+        description: descriptionRef.current?.value || "",
+        image_url: imageUrlRef.current?.value || "",
+        start_date: startDateRef.current?.value
+          ? new Date(startDateRef.current.value)
+          : undefined,
+        end_date: endDateRef.current?.value
+          ? new Date(endDateRef.current.value)
+          : undefined,
+        total_video_size: 0,
+      });
+    } else if (mode === "lesson" && courseId) {
+      lessonMutation.mutate({
+        url: urlRef.current?.value || "",
+        size: sizeRef.current?.value ? parseInt(sizeRef.current?.value, 10) : 0,
+      });
+    }
     onClose();
   };
 
@@ -79,120 +103,149 @@ export default function ModalCreateCourse({
         boxShadow="6px 6px 0 white"
         mx={2}
       >
-        <ModalHeader>Criar Curso</ModalHeader>
+        <ModalHeader>
+          {mode === "course" ? "Criar Curso" : "Criar Aula"}
+        </ModalHeader>
         <ModalCloseButton />
         <ModalBody>
           <Stack spacing={stackSpacing}>
-            <FormControl>
-              <FormLabel>Título</FormLabel>
-              <Input
-                name="title"
-                ref={titleRef}
-                placeholder="Digite o título do curso"
-                bg="white"
-                border="1px"
-                borderColor="black"
-                boxShadow="6px 6px 0 black"
-                _focus={{
-                  borderColor: "black",
-                  boxShadow: "6px 6px 0 grey",
-                  outline: "none",
-                }}
-                size={inputSize}
-              />
-            </FormControl>
-            <FormControl>
-              <FormLabel>Descrição</FormLabel>
-              <Input
-                name="description"
-                ref={descriptionRef}
-                placeholder="Digite a descrição"
-                bg="white"
-                border="1px"
-                borderColor="black"
-                boxShadow="6px 6px 0 black"
-                _focus={{
-                  borderColor: "black",
-                  boxShadow: "6px 6px 0 grey",
-                  outline: "none",
-                }}
-                size={inputSize}
-              />
-            </FormControl>
-            <FormControl>
-              <FormLabel>Data de Início</FormLabel>
-              <Input
-                type="date"
-                name="start_date"
-                ref={startDateRef}
-                bg="white"
-                border="1px"
-                borderColor="black"
-                boxShadow="6px 6px 0 black"
-                _focus={{
-                  borderColor: "black",
-                  boxShadow: "6px 6px 0 grey",
-                  outline: "none",
-                }}
-                size={inputSize}
-              />
-            </FormControl>
-            <FormControl>
-              <FormLabel>Data de Término</FormLabel>
-              <Input
-                type="date"
-                name="end_date"
-                ref={endDateRef}
-                bg="white"
-                border="1px"
-                borderColor="black"
-                boxShadow="6px 6px 0 black"
-                _focus={{
-                  borderColor: "black",
-                  boxShadow: "6px 6px 0 grey",
-                  outline: "none",
-                }}
-                size={inputSize}
-              />
-            </FormControl>
-            <FormControl>
-              <FormLabel>URL da Imagem</FormLabel>
-              <Input
-                type="text"
-                name="image_url"
-                ref={imageUrlRef}
-                placeholder="Digite a URL da imagem"
-                bg="white"
-                border="1px"
-                borderColor="black"
-                boxShadow="6px 6px 0 black"
-                _focus={{
-                  borderColor: "black",
-                  boxShadow: "6px 6px 0 grey",
-                  outline: "none",
-                }}
-                size={inputSize}
-              />
-            </FormControl>
-            <FormControl>
-              <FormLabel>Tamanho total do vídeo (MB)</FormLabel>
-              <Input
-                type="number"
-                name="total_video_size"
-                ref={videoSizeRef}
-                placeholder="Digite o tamanho total do vídeo"
-                bg="white"
-                border="1px"
-                borderColor="black"
-                boxShadow="6px 6px 0 black"
-                _focus={{
-                  borderColor: "black",
-                  boxShadow: "6px 6px 0 grey",
-                  outline: "none",
-                }}
-                size={inputSize}
-              />
-            </FormControl>
+            {mode === "course" && (
+              <>
+                <FormControl>
+                  <FormLabel>Título</FormLabel>
+                  <Input
+                    name="title"
+                    ref={titleRef}
+                    placeholder="Digite o título do curso"
+                    bg="white"
+                    border="1px"
+                    borderColor="black"
+                    boxShadow="6px 6px 0 black"
+                    _focus={{
+                      borderColor: "black",
+                      boxShadow: "6px 6px 0 grey",
+                      outline: "none",
+                    }}
+                    size={inputSize}
+                  />
+                </FormControl>
+                <FormControl>
+                  <FormLabel>Descrição</FormLabel>
+                  <Input
+                    name="description"
+                    ref={descriptionRef}
+                    placeholder="Digite a descrição"
+                    bg="white"
+                    border="1px"
+                    borderColor="black"
+                    boxShadow="6px 6px 0 black"
+                    _focus={{
+                      borderColor: "black",
+                      boxShadow: "6px 6px 0 grey",
+                      outline: "none",
+                    }}
+                    size={inputSize}
+                  />
+                </FormControl>
+                <FormControl>
+                  <FormLabel>Data de Início</FormLabel>
+                  <Input
+                    type="date"
+                    name="start_date"
+                    ref={startDateRef}
+                    bg="white"
+                    border="1px"
+                    borderColor="black"
+                    boxShadow="6px 6px 0 black"
+                    _focus={{
+                      borderColor: "black",
+                      boxShadow: "6px 6px 0 grey",
+                      outline: "none",
+                    }}
+                    size={inputSize}
+                  />
+                </FormControl>
+                <FormControl>
+                  <FormLabel>Data de Término</FormLabel>
+                  <Input
+                    type="date"
+                    name="end_date"
+                    ref={endDateRef}
+                    bg="white"
+                    border="1px"
+                    borderColor="black"
+                    boxShadow="6px 6px 0 black"
+                    _focus={{
+                      borderColor: "black",
+                      boxShadow: "6px 6px 0 grey",
+                      outline: "none",
+                    }}
+                    size={inputSize}
+                  />
+                </FormControl>
+                <FormControl>
+                  <FormLabel>URL da Imagem</FormLabel>
+                  <Input
+                    type="text"
+                    name="image_url"
+                    ref={imageUrlRef}
+                    placeholder="Digite a URL da imagem"
+                    bg="white"
+                    border="1px"
+                    borderColor="black"
+                    boxShadow="6px 6px 0 black"
+                    _focus={{
+                      borderColor: "black",
+                      boxShadow: "6px 6px 0 grey",
+                      outline: "none",
+                    }}
+                    size={inputSize}
+                  />
+                </FormControl>
+              </>
+            )}
+
+            {mode === "lesson" && (
+              <>
+                <FormControl>
+                  <FormLabel>URL da Aula</FormLabel>
+                  <Input
+                    name="url"
+                    ref={urlRef}
+                    placeholder="Digite a URL da aula"
+                    bg="white"
+                    border="1px"
+                    borderColor="black"
+                    boxShadow="6px 6px 0 black"
+                    _focus={{
+                      borderColor: "black",
+                      boxShadow: "6px 6px 0 grey",
+                      outline: "none",
+                    }}
+                    size={inputSize}
+                  />
+                </FormControl>
+                <FormControl>
+                  <FormLabel>Tamanho do Vídeo (MB)</FormLabel>
+                  <Input
+                    type="number"
+                    name="size"
+                    ref={sizeRef}
+                    placeholder="Digite o tamanho do vídeo"
+                    bg="white"
+                    border="1px"
+                    borderColor="black"
+                    boxShadow="6px 6px 0 black"
+                    _focus={{
+                      borderColor: "black",
+                      boxShadow: "6px 6px 0 grey",
+                      outline: "none",
+                    }}
+                    size={inputSize}
+                  />
+                </FormControl>
+              </>
+            )}
           </Stack>
         </ModalBody>
 

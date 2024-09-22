@@ -12,25 +12,27 @@ class Api::V1::CoursesController < ApplicationController
   @courses = @courses.page(params[:page]).per(3)
 
   render json: {
-    courses: @courses,
+    courses: @courses.as_json(include: :lessons),
     current_page: @courses.current_page,
     total_pages: @courses.total_pages,
     total_count: @courses.total_count
   }
   end
 
+
   # GET /courses/totalVideoSum
  def totalVideoSum
   total_video_size = Course.sum(:total_video_size)
-  puts "Total video size sum: #{total_video_size}" # Adicione esse log para verificar o valor
+  puts "Total video size sum: #{total_video_size}" 
   render json: { storage: total_video_size }
 end
 
 
   # GET /courses/1
-  def show
-    render json: @course
+   def show
+    render json: @course.to_json(include: :lessons)
   end
+
 
   # POST /courses
   def create
@@ -64,6 +66,6 @@ end
     end
 
     def course_params
-      params.require(:course).permit(:title, :description, :start_date, :end_date, :total_video_size, :image_url)
-    end
+    params.require(:course).permit(:title, :description, :start_date, :end_date, :image_url)
+  end
 end

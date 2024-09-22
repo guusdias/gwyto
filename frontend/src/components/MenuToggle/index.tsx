@@ -75,7 +75,7 @@ export function MenuToggle({ onEdit, id }: MenuToggleProps) {
         boxShadow={"6px 6px 0 black"}
       >
         <MenuItem onClick={handleViewCourse}>Acessar curso</MenuItem>
-        <MenuItem onClick={onEdit}>Ver</MenuItem>
+        <MenuItem onClick={onEdit}>Ver e editar curso</MenuItem>
         <MenuItem onClick={handleDelete}>Delete</MenuItem>
       </MenuList>
     </Menu>

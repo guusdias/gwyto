@@ -9,7 +9,7 @@ export default function Home() {
     <div>
       <Header />
       <ListingCourses onCreate={onOpen} />
-      <ModalCreateCourse isOpen={isOpen} onClose={onClose} />
+      <ModalCreateCourse isOpen={isOpen} onClose={onClose} mode="course" />
     </div>
   );
 }
