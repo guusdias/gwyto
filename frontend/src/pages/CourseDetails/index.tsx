@@ -189,8 +189,17 @@ const CourseDetails = () => {
                     color="black"
                     textDecoration="underline"
                     fontSize={["sm", "md"]}
+                    width="100%"
+                    justifyContent="flex-start"
+                    px={0}
                   >
-                    {`Aula 0${index + 1} - ${lesson.url} `}
+                    <Text
+                      wordBreak="break-word"
+                      whiteSpace="normal"
+                      overflow="hidden"
+                    >
+                      {`Aula 0${index + 1} - ${lesson.url}`}
+                    </Text>
                   </Button>
                 )}
               </Text>
