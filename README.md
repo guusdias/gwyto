@@ -1,6 +1,3 @@
-Aqui está um exemplo de um README simples para o seu projeto:
-
----
 
 # Course and Lessons Management API
 
