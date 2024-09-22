@@ -1,5 +1,13 @@
+import { useRef, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { IoIosArrowBack } from "react-icons/io";
+import { FaRegTrashAlt, FaEdit, FaCheck } from "react-icons/fa";
+
+import ICourse, { ILesson } from "../../types/ICourse";
+import ApiLesson from "../../api/lesson";
+import Api from "../../api/course";
+
 import {
   Box,
   Heading,
@@ -13,24 +21,16 @@ import {
   Image,
 } from "@chakra-ui/react";
 
-import { IoIosArrowBack } from "react-icons/io";
-import { FaRegTrashAlt, FaEdit, FaCheck } from "react-icons/fa";
-import ICourse, { ILesson } from "../../types/ICourse";
-import ApiLesson from "../../api/lesson";
-import Api from "../../api/course";
-import { useRef, useState } from "react";
-
 const CourseDetails = () => {
   const { id } = useParams<{ id: string }>();
   const queryClient = useQueryClient();
   const navigate = useNavigate();
 
-  // Ref para manter a referência dos valores de edição
   const urlRef = useRef<HTMLInputElement>(null);
   const sizeRef = useRef<HTMLInputElement>(null);
 
-  const [editLessonId, setEditLessonId] = useState<number | null>(null); // Gerencia o ID da aula em edição
-  const [selectedLesson, setSelectedLesson] = useState<ILesson | null>(null); // Para exibir o vídeo
+  const [editLessonId, setEditLessonId] = useState<number | null>(null);
+  const [selectedLesson, setSelectedLesson] = useState<ILesson | null>(null);
 
   const {
     data: course,
@@ -71,7 +71,7 @@ const CourseDetails = () => {
       queryClient.invalidateQueries({
         queryKey: ["course", Number(id)],
       });
-      setEditLessonId(null); // Volta para modo de visualização após salvar
+      setEditLessonId(null);
     },
   });
 
@@ -82,7 +82,7 @@ const CourseDetails = () => {
   };
 
   const handleEditLesson = (lesson: ILesson) => {
-    setEditLessonId(lesson.id); // Define a aula a ser editada
+    setEditLessonId(lesson.id);
     if (urlRef.current) urlRef.current.value = lesson.url;
     if (sizeRef.current) sizeRef.current.value = lesson.size.toString();
   };
@@ -111,60 +111,97 @@ const CourseDetails = () => {
   console.log(course);
 
   return (
-    <Box p={5}>
+    <Flex p={5} flexDirection="column">
       <Button
+        alignSelf={"start"}
         leftIcon={<IoIosArrowBack />}
         colorScheme="teal"
         onClick={() => navigate("/")}
         mb={4}
+        bg="black"
+        border="1px"
+        borderColor="white"
+        boxShadow="6px 6px 0 black"
+        _hover={{ bg: "blackAlpha.800" }}
       >
         Voltar à Página Inicial
       </Button>
 
-      <Heading>{course.title}</Heading>
-      <Image
-        src={course.image_url || "https://via.placeholder.com/50"}
-        alt={course.title}
-        mr={4}
-      />
-      <Text>{course.description}</Text>
-
-      <Heading size="md" mt={6}>
+      <Flex flexGrow={1} direction={"column"}>
+        <Image
+          src={
+            course.image_url ||
+            "https://www.contentviewspro.com/wp-content/uploads/2017/07/default_image.png"
+          }
+          alt={course.title}
+          mr={4}
+        />
+        <Box mt={10}>
+          <Heading fontSize={50} textAlign={"left"} mb={10}>
+            {course.title}
+          </Heading>
+          <Text textAlign={"left"} fontSize={20}>
+            {course.description}
+          </Text>
+        </Box>
+      </Flex>
+      <Heading fontSize={40} textAlign={"left"} size="md" mt={6} mb={6}>
         Aulas
       </Heading>
-      <Stack spacing={4}>
-        {course.lessons?.map((lesson: ILesson) => (
-          <Box key={lesson.id} p={4} borderWidth={1} borderRadius="md">
-            <Flex alignItems="center">
+      <Stack
+        spacing={0}
+        bg="white"
+        border="1px"
+        borderColor="black"
+        boxShadow="6px 6px 0 black"
+      >
+        {course.lessons?.map((lesson: ILesson, index) => (
+          <Flex
+            key={lesson.id}
+            p={4}
+            borderWidth={1}
+            borderRadius="0px"
+            bg="white"
+            border="1px"
+            borderColor="black"
+            flexDirection={"row"}
+            justifyContent={"space-between"}
+          >
+            <Flex
+              alignItems="center"
+              flexDirection={"row"}
+              justifyContent={"space-between"}
+              gap={4}
+            >
               <Text>
-                <b>URL:</b>{" "}
                 {editLessonId === lesson.id ? (
                   <Input ref={urlRef} defaultValue={lesson.url} />
                 ) : (
                   <Button
                     variant="link"
                     onClick={() => setSelectedLesson(lesson)}
+                    color={"black"}
+                    textDecoration={"underline"}
                   >
-                    {lesson.url}
+                    {`Aula 0${index + 1} - ${lesson.url} `}
                   </Button>
                 )}
               </Text>
+              <Text>
+                {editLessonId === lesson.id ? (
+                  <Input ref={sizeRef} defaultValue={lesson.size.toString()} />
+                ) : (
+                  `${lesson.size} MB`
+                )}
+              </Text>
             </Flex>
-
-            <Text>
-              <b>Tamanho:</b>{" "}
-              {editLessonId === lesson.id ? (
-                <Input ref={sizeRef} defaultValue={lesson.size.toString()} />
-              ) : (
-                `${lesson.size} MB`
-              )}
-            </Text>
 
             <Flex mt={2}>
               {editLessonId === lesson.id ? (
                 <Button
                   leftIcon={<FaCheck />}
-                  colorScheme="green"
+                  colorScheme="black"
+                  color={"black"}
                   onClick={() => handleSaveLesson(lesson)}
                 >
                   Salvar
@@ -174,26 +211,34 @@ const CourseDetails = () => {
                   <IconButton
                     aria-label="Editar Aula"
                     icon={<FaEdit />}
-                    colorScheme="blue"
                     mr={2}
+                    bgColor={"black"}
+                    color={"white"}
+                    borderColor={"white"}
+                    borderWidth={2}
+                    boxShadow="3px 3px 0 black"
+                    borderRadius="unset"
                     onClick={() => handleEditLesson(lesson)}
                   />
                   <IconButton
                     aria-label="Excluir Aula"
                     icon={<FaRegTrashAlt />}
-                    colorScheme="red"
+                    colorScheme="black"
+                    color={"black"}
                     onClick={() => handleDeleteLesson(lesson.id)}
                   />
                 </>
               )}
             </Flex>
-          </Box>
+          </Flex>
         ))}
       </Stack>
 
       {selectedLesson && (
         <Box mt={6}>
-          <Heading size="md">Vídeo da Aula</Heading>
+          <Heading size="md" fontSize={30}>
+            Vídeo da Aula
+          </Heading>
           <iframe
             src={selectedLesson.url}
             width="100%"
@@ -203,7 +248,7 @@ const CourseDetails = () => {
           ></iframe>
         </Box>
       )}
-    </Box>
+    </Flex>
   );
 };
 
