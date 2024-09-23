@@ -53,6 +53,67 @@ Abra o navegador e acesse:
 http://localhost:3000
 ```
 
+## Resolução de Problemas: Erro 500
+
+Se você receber a mensagem de erro no frontend como:
+
+```bash
+Erro ao storage: Request failed with status code 500
+Erro ao carregar cursos: Request failed with status code 500
+```
+
+Esse erro pode estar relacionado a migrações pendentes no banco de dados ou a permissões de diretórios de logs e armazenamento. Aqui estão os passos para resolver:
+
+### 1. Verificar Logs do Container
+
+Primeiro, verifique os logs do container para ver detalhes do erro:
+
+```bash
+docker logs my-app
+```
+
+Isso ajudará a identificar o problema específico que está causando o erro no servidor.
+
+### 2. Executar Migrações Pendentes
+
+Certifique-se de que todas as migrações do banco de dados estão aplicadas. Para isso, entre no container do Rails e execute as migrações:
+
+```bash
+docker exec -it my-app bash
+```
+
+Dentro do container, execute o comando:
+
+```bash
+bin/rails db:migrate
+```
+
+Isso vai aplicar todas as migrações pendentes. 
+
+### 3. Verificar Permissões das Pastas
+
+Certifique-se de que as pastas `log`, `storage` e `tmp` têm as permissões corretas para serem escritas:
+
+Entre no container do Rails:
+
+```bash
+docker exec -it my-app bash
+```
+
+E então corrija as permissões com o comando:
+
+```bash
+chown -R 1000:1000 log storage tmp
+```
+
+### 4. Reiniciar o Container
+
+Após aplicar as migrações e corrigir as permissões, reinicie o container para garantir que as alterações sejam aplicadas:
+
+```bash
+docker restart my-app
+```
+
 ## Funcionalidades
 
 ### Cursos
