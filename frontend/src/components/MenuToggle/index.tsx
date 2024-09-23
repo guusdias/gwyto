@@ -44,6 +44,8 @@ export function MenuToggle({ onEdit, id }: MenuToggleProps) {
     navigate(`/course/${id}`);
   };
 
+  //guusdias
+
   return (
     <Menu>
       <MenuButton
