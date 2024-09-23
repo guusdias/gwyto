@@ -18,9 +18,9 @@ const Header = () => {
   const padding = useBreakpointValue({ base: 4, md: 6, lg: 8 });
   const gap = useBreakpointValue({ base: 2, md: 3, lg: 4 });
 
-  if (isLoading) return <Box>Carregando...</Box>;
+  if (isLoading) return console.log("Carregando storage...");
   if (isError) {
-    return <Box>Erro ao storage: {error.message}</Box>;
+    return console.log(`Erro ao storage: ${error.message}`);
   }
 
   const storage = data?.storage || 0;
