@@ -20,7 +20,7 @@ const Header = () => {
 
   if (isLoading) return <Box>Carregando...</Box>;
   if (isError) {
-    return <Box>Erro ao storage: {error.message}</Box>;
+    return console.log(`Erro ao storage: ${error.message}`);
   }
 
   const storage = data?.storage || 0;
