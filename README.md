@@ -1,143 +1,78 @@
-# Gwyto - The right place to learn about entrepreneurship
+### Pré-requisitos
 
+1. **Ruby on Rails**: Certifique-se de ter o Ruby e o Rails instalados.
 
-Instruções para Rodar o Projeto
+   - Instale o Ruby via `rbenv` ou `rvm` e depois o Rails com o comando:
+     ```bash
+     gem install rails
+     ```
 
-#### 1. **Clone o repositório**
+2. **Node.js**: Certifique-se de ter o Node.js e o Yarn instalados para rodar o frontend.
 
-```
-git clone https://github.com/guusdias/gwyto.git
-cd gwyto
-```
+   - Instale o Node.js: [Node.js download](https://nodejs.org)
+   - Instale o Yarn:
+     ```bash
+     npm install -g yarn
+     ```
 
-#### 2. **Configurar Variáveis de Ambiente**
+3. **SQLite3**: O projeto usa o SQLite como banco de dados. Certifique-se de tê-lo instalado.
 
-Crie o arquivo `.env` na raiz do projeto, com as variáveis de ambiente necessárias. Exemplo:
+### Passo a Passo
 
-```
-RAILS_ENV=production
-VITE_API_URL=http://localhost:3000/api/v1/courses
-```
+#### 1. Configurar o Backend (Rails)
 
-#### 3. **Build da Imagem Docker**
+1. **Instalar dependências do backend**
+   Navegue até a pasta raiz do projeto Ruby on Rails e instale as gems:
 
-Para construir a imagem Docker, execute o comando:
+   ```bash
+   bundle install
+   ```
 
-```bash
-docker build -t my-app .
-```
+2. **Executar Migrações do Banco de Dados**
+   Aplique as migrações para configurar o banco de dados:
 
-#### 4. **Rodar as Migrações**
+   ```bash
+   rails db:migrate
+   ```
 
-Depois que a imagem for construída, é necessário rodar as migrações do banco de dados:
+3. **Iniciar o Servidor Rails**
+   Execute o comando para iniciar o servidor do backend:
 
-```bash
-docker run -it --rm my-app bundle exec rails db:migrate
-```
+   ```bash
+   rails s
+   ```
 
-#### 5. **Iniciar o Container**
+   O servidor estará rodando em [http://localhost:3000](http://localhost:3000).
 
-Agora você pode iniciar o container do projeto:
+#### 2. Configurar o Frontend (Vite)
 
-```bash
-docker run -p 3000:3000 my-app
-```
+1. **Instalar dependências do frontend**
+   Navegue até a pasta `frontend` dentro do projeto e instale as dependências com Yarn:
 
-Isso iniciará o servidor Rails na porta 3000, e o frontend estará disponível na mesma porta.
+   ```bash
+   cd frontend
+   yarn install
+   ```
 
-#### 6. **Acessar o Projeto**
+2. **Rodar o servidor de desenvolvimento do frontend**
+   Inicie o servidor do Vite com o comando:
 
-Abra o navegador e acesse:
+   ```bash
+   yarn dev
+   ```
 
-```
-http://localhost:3000
-```
+   O servidor estará rodando em [http://localhost:5173](http://localhost:5173).
 
-## Resolução de Problemas: Erro 500
+#### 3. Acessar o Projeto
 
-Se você receber a mensagem de erro no frontend como:
+- **Backend (API)**: Acesse [http://localhost:3000](http://localhost:3000).
+- **Frontend**: Acesse [http://localhost:5173](http://localhost:5173) para ver a aplicação rodando com o frontend.
 
-```bash
-Erro ao storage: Request failed with status code 500
-Erro ao carregar cursos: Request failed with status code 500
-```
+### Variáveis de Ambiente
 
-Esse erro pode estar relacionado a migrações pendentes no banco de dados ou a permissões de diretórios de logs e armazenamento. Aqui estão os passos para resolver:
+- No frontend, o arquivo `.env` ou `.env.local` deve conter a URL da API:
+  ```bash
+  VITE_API_URL=http://localhost:3000/api/v1/courses
+  ```
 
-### 1. Verificar Logs do Container
-
-Primeiro, verifique os logs do container para ver detalhes do erro:
-
-```bash
-docker logs my-app
-```
-
-Isso ajudará a identificar o problema específico que está causando o erro no servidor.
-
-### 2. Executar Migrações Pendentes
-
-Certifique-se de que todas as migrações do banco de dados estão aplicadas. Para isso, entre no container do Rails e execute as migrações:
-
-```bash
-docker exec -it my-app bash
-```
-
-Dentro do container, execute o comando:
-
-```bash
-bin/rails db:migrate
-```
-
-Isso vai aplicar todas as migrações pendentes. 
-
-### 3. Verificar Permissões das Pastas
-
-Certifique-se de que as pastas `log`, `storage` e `tmp` têm as permissões corretas para serem escritas:
-
-Entre no container do Rails:
-
-```bash
-docker exec -it my-app bash
-```
-
-E então corrija as permissões com o comando:
-
-```bash
-chown -R 1000:1000 log storage tmp
-```
-
-### 4. Reiniciar o Container
-
-Após aplicar as migrações e corrigir as permissões, reinicie o container para garantir que as alterações sejam aplicadas:
-
-```bash
-docker restart my-app
-```
-
-## Funcionalidades
-
-### Cursos
-
-- **GET /api/v1/courses**: Retorna uma lista de cursos com paginação.
-- **GET /api/v1/courses/:id**: Retorna os detalhes de um curso específico, incluindo suas aulas.
-- **POST /api/v1/courses**: Cria um novo curso.
-- **PATCH/PUT /api/v1/courses/:id**: Atualiza um curso existente.
-- **DELETE /api/v1/courses/:id**: Exclui um curso.
-- **GET /api/v1/courses/totalVideoSum**: Retorna a soma total do tamanho dos vídeos de todos os cursos.
-
-### Aulas
-
-- **GET /api/v1/courses/:course_id/lessons**: Retorna a lista de aulas de um curso específico.
-- **GET /api/v1/courses/:course_id/lessons/:id**: Retorna os detalhes de uma aula específica.
-- **POST /api/v1/courses/:course_id/lessons**: Cria uma nova aula para um curso específico.
-- **PATCH/PUT /api/v1/courses/:course_id/lessons/:id**: Atualiza uma aula existente.
-- **DELETE /api/v1/courses/:course_id/lessons/:id**: Exclui uma aula.
-
-## Estrutura do Projeto
-
-- **Controllers**:
-  - `Api::V1::CoursesController`: Gerencia as operações CRUD relacionadas a cursos.
-  - `Api::V1::LessonsController`: Gerencia as operações CRUD relacionadas a aulas.
-- **Models**:
-  - `Course`: Representa os cursos, que possuem título, descrição, datas e o tamanho total dos vídeos.
-  - `Lesson`: Representa as aulas, que possuem URL e tamanho do vídeo, associadas a um curso.
+Isso permitirá que o frontend se comunique com a API do backend localmente.
