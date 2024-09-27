@@ -1,4 +1,3 @@
-import { useRef } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { ICourseCreate, ILessonCreate } from "../../types/ICourse";
 import Api from "../../api/course";
@@ -17,6 +16,7 @@ import {
 import CreateLesson from "./LessonModal";
 import CreateCourse from "./CourseModal";
 import CustomButton from "../Atoms/CustomButtom";
+import { useModalRefs } from "../../types/refs";
 
 interface ModalCreateProps {
   isOpen: boolean;
@@ -31,13 +31,15 @@ export default function ModalCreate({
   mode,
   courseId,
 }: ModalCreateProps) {
-  const titleRef = useRef<HTMLInputElement>(null);
-  const descriptionRef = useRef<HTMLInputElement>(null);
-  const startDateRef = useRef<HTMLInputElement>(null);
-  const endDateRef = useRef<HTMLInputElement>(null);
-  const imageUrlRef = useRef<HTMLInputElement>(null);
-  const urlRef = useRef<HTMLInputElement>(null);
-  const sizeRef = useRef<HTMLInputElement>(null);
+  const {
+    titleRef,
+    descriptionRef,
+    startDateRef,
+    endDateRef,
+    imageUrlRef,
+    urlRef,
+    sizeRef,
+  } = useModalRefs();
 
   const modalSize = useBreakpointValue({ base: "full", md: "3xl" });
   const stackSpacing = useBreakpointValue({ base: 3, md: 4 });

@@ -1,4 +1,3 @@
-import { useRef } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { MenuToggle } from "../MenuToggle";
 import { convertMbToGb } from "../../helpers/getConvertMbToMb.ts";
@@ -23,6 +22,7 @@ import {
   useDisclosure,
   useBreakpointValue,
 } from "@chakra-ui/react";
+import { useModalRefs } from "../../types/refs.tsx";
 
 interface ModalProps {
   storage: number;
@@ -41,10 +41,8 @@ export default function ModalEdit({
   title,
   description,
 }: ModalProps) {
+  const { nameRef, descriptionRef } = useModalRefs();
   const { isOpen, onOpen, onClose } = useDisclosure();
-
-  const nameRef = useRef<HTMLInputElement>(null);
-  const descriptionRef = useRef<HTMLInputElement>(null);
 
   const queryClient = useQueryClient();
 

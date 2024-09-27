@@ -4,16 +4,12 @@ import {
   Input,
   useBreakpointValue,
 } from "@chakra-ui/react";
-import { useRef } from "react";
+import { useModalRefs } from "../../../types/refs";
 
 export default function CreateCourse() {
+  const { titleRef, descriptionRef, startDateRef, endDateRef, imageUrlRef } =
+    useModalRefs();
   const inputSize = useBreakpointValue({ base: "sm", md: "md" });
-
-  const titleRef = useRef<HTMLInputElement>(null);
-  const descriptionRef = useRef<HTMLInputElement>(null);
-  const startDateRef = useRef<HTMLInputElement>(null);
-  const endDateRef = useRef<HTMLInputElement>(null);
-  const imageUrlRef = useRef<HTMLInputElement>(null);
 
   return (
     <>
